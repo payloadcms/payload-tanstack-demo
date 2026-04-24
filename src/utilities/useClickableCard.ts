@@ -55,17 +55,18 @@ function useClickableCard<T extends HTMLElement>({
 
   const handleMouseUp = useCallback(
     (e: MouseEvent) => {
-      if (link.current?.href) {
+      const href = link.current?.getAttribute('href')
+      if (href) {
         const timeNow = +new Date()
         const difference = timeNow - timeDown.current
 
-        if (link.current?.href && difference <= 250) {
+        if (difference <= 250) {
           if (!hasActiveParent.current && pressedButton.current === 0 && !e.ctrlKey) {
             if (external) {
               const target = newTab ? '_blank' : '_self'
-              window.open(link.current.href, target)
+              window.open(link.current!.href, target)
             } else {
-              router.navigate({ to: link.current.href })
+              router.navigate({ to: href })
             }
           }
         }

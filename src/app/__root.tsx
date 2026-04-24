@@ -1,5 +1,4 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
-import { InitTheme } from '@/providers/Theme/InitTheme'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -15,9 +14,8 @@ function RootComponent() {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
-        <InitTheme />
       </head>
-      <body className="font-sans">
+      <body>
         <Outlet />
         <Scripts />
       </body>

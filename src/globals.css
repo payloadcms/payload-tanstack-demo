@@ -1,4 +1,5 @@
-@import 'tailwindcss';
+@import 'tailwindcss/theme';
+@import 'tailwindcss/utilities';
 @import 'tw-animate-css';
 
 @config '../tailwind.config.mjs';
@@ -27,14 +28,47 @@
 @custom-variant 2xl (@media (width >= theme(--breakpoint-2xl)));
 
 @layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: unset;
-    font-size: unset;
+  [data-frontend] *,
+  [data-frontend] *::before,
+  [data-frontend] *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: currentColor;
+  }
+  [data-frontend] h1,
+  [data-frontend] h2,
+  [data-frontend] h3,
+  [data-frontend] h4,
+  [data-frontend] h5,
+  [data-frontend] h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  [data-frontend] a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+  [data-frontend] img,
+  [data-frontend] svg,
+  [data-frontend] video {
+    display: block;
+    max-width: 100%;
+  }
+  [data-frontend] button,
+  [data-frontend] input,
+  [data-frontend] optgroup,
+  [data-frontend] select,
+  [data-frontend] textarea {
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
   }
 }
 
@@ -222,19 +256,19 @@
 }
 
 @layer base {
-  * {
+  [data-frontend] * {
     @apply border-border outline-ring/50;
   }
-  body {
+  [data-frontend] {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
 }
 
-html {
+[data-frontend] {
   opacity: 0;
 }
 
-html[data-theme='dark'],
-html[data-theme='light'] {
+html[data-theme='dark'] [data-frontend],
+html[data-theme='light'] [data-frontend] {
   opacity: initial;
 }

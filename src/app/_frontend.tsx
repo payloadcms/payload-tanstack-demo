@@ -3,6 +3,7 @@ import { getHeaderData, getFooterData } from '@/functions/frontend.functions'
 import { AdminBar } from '@/components/AdminBar'
 import { Header } from '@/Header/Component'
 import { Footer } from '@/Footer/Component'
+import { InitTheme } from '@/providers/Theme/InitTheme'
 import { Providers } from '@/providers'
 import React from 'react'
 import '@/globals.css'
@@ -19,11 +20,14 @@ function FrontendLayout() {
   const { headerData, footerData } = Route.useLoaderData()
 
   return (
-    <Providers>
-      <AdminBar adminBarProps={{}} />
-      <Header data={headerData} />
-      <Outlet />
-      <Footer data={footerData} />
-    </Providers>
+    <div data-frontend="" className="font-sans">
+      <InitTheme />
+      <Providers>
+        <AdminBar adminBarProps={{}} />
+        <Header data={headerData} />
+        <Outlet />
+        <Footer data={footerData} />
+      </Providers>
+    </div>
   )
 }
