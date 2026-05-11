@@ -20,6 +20,9 @@ importers:
 
   .:
     dependencies:
+      '@faceless-ui/window-info':
+        specifier: ^3.0.1
+        version: 3.0.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@payloadcms/admin-bar':
         specifier: file:payloadcms-admin-bar-4.0.0-beta.0.tgz
         version: file:payloadcms-admin-bar-4.0.0-beta.0.tgz(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -1569,7 +1572,7 @@ packages:
       react-dom: ^19.0.1 || ^19.1.2 || ^19.2.1
 
   '@payloadcms/tanstack-start@file:payloadcms-tanstack-start-3.81.0.tgz':
-    resolution: {integrity: sha512-IR0cjfIv/Pg+h2zfXmfDr87fXXlkMY5ktlYrULw2Q1/+p2jjvMEqSPbpcgrolZRAF+dgap2Yv2hgHmkRnqEUmQ==, tarball: file:payloadcms-tanstack-start-3.81.0.tgz}
+    resolution: {integrity: sha512-zp+z3NmhtepsRQJcQSI/v+ND+1FQnuu5x0sIiwyros1Tm532mmgvukKeSxlTRWCgGjTWfa4gjn8nQnuFQ1PQKg==, tarball: file:payloadcms-tanstack-start-3.81.0.tgz}
     version: 3.81.0
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
@@ -1591,7 +1594,7 @@ packages:
     version: 4.0.0-beta.0
 
   '@payloadcms/ui@file:payloadcms-ui-4.0.0-beta.0.tgz':
-    resolution: {integrity: sha512-CBUkixTnSbAORgczBvZ7SalC6FpLqONJRGcXiK42wu1v32SGjzTZiSDbZfNqyY8wu2W6b6Zqf2BHo+PLG6F7cA==, tarball: file:payloadcms-ui-4.0.0-beta.0.tgz}
+    resolution: {integrity: sha512-Gs7dDSM3ZqRWijPisnY1dvg1H2/iqas0qLbhOI/JZ9nsYWJUj/yOCL3ARBX4DynDu4z0GBqKNXGJMtsw3r6ZTw==, tarball: file:payloadcms-ui-4.0.0-beta.0.tgz}
     version: 4.0.0-beta.0
     engines: {node: '>=24.15.0'}
     peerDependencies:
@@ -3527,7 +3530,7 @@ packages:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
 
   payload@file:payload-4.0.0-beta.0.tgz:
-    resolution: {integrity: sha512-Nzd577TGWgL0+y7PRLDC5SXpR1yInpO31lSEVQ7xxm49TyeCLE2XSmpc6YFfo/tyQImJ9Eji9h6CWiMzn5tARQ==, tarball: file:payload-4.0.0-beta.0.tgz}
+    resolution: {integrity: sha512-o4B8Xr730JrtRIjOyiGTKTl0g3ER8RzlEvqX2IYIgBg6iWw/Dww477zV900YOIUHYpGXUFG9iGBeNhFuzGTlyg==, tarball: file:payload-4.0.0-beta.0.tgz}
     version: 4.0.0-beta.0
     engines: {node: '>=24.15.0'}
     hasBin: true

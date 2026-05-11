@@ -26,6 +26,7 @@ function PayloadLayout() {
         config={data.clientConfig}
         dateFNSKey={data.dateFNSKey}
         fallbackLang={data.fallbackLang}
+        highContrastMode={false}
         isNavOpen={data.isNavOpen}
         languageCode={data.languageCode}
         languageOptions={data.languageOptions}

@@ -20,7 +20,7 @@ export default defineConfig((env) =>
       additionalOptimizeDepsInclude: ['react/compiler-runtime'],
       payloadConfigPath: path.resolve(__dirname, 'src', 'payload.config.ts'),
       reactPlugin: viteReact({
-        exclude: [],
+        exclude: [/node_modules\/@payloadcms\/ui\/dist/],
         include: /\.[jt]sx?$/,
       }),
       rscPlugin: rsc({ serverHandler: false }),

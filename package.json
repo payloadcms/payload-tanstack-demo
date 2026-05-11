@@ -17,6 +17,7 @@
     "reinstall": "rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install"
   },
   "dependencies": {
+    "@faceless-ui/window-info": "^3.0.1",
     "@payloadcms/admin-bar": "file:payloadcms-admin-bar-4.0.0-beta.0.tgz",
     "@payloadcms/db-sqlite": "file:payloadcms-db-sqlite-4.0.0-beta.0.tgz",
     "@payloadcms/drizzle": "file:payloadcms-drizzle-4.0.0-beta.0.tgz",
