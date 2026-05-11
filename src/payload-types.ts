@@ -78,16 +78,11 @@ export interface Config {
     search: Search;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
-    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    'payload-folders': {
-      documentsAndFolders: 'payload-folders' | 'media';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -100,7 +95,6 @@ export interface Config {
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
-    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -118,7 +112,9 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: null;
-  widgets: {};
+  widgets: {
+    collections: CollectionsWidget;
+  };
   user: User;
   jobs: {
     tasks: {
@@ -274,6 +270,7 @@ export interface Post {
  */
 export interface Media {
   id: number;
+  _h_media?: (number | null) | Media;
   alt?: string | null;
   caption?: {
     root: {
@@ -290,9 +287,10 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
-  folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
+  _h_slugPath?: string | null;
+  _h_titlePath?: string | null;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -360,32 +358,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders".
- */
-export interface FolderInterface {
-  id: number;
-  name: string;
-  folder?: (number | null) | FolderInterface;
-  documentsAndFolders?: {
-    docs?: (
-      | {
-          relationTo?: 'payload-folders';
-          value: number | FolderInterface;
-        }
-      | {
-          relationTo?: 'media';
-          value: number | Media;
-        }
-    )[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  folderType?: 'media'[] | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1004,10 +976,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'search';
         value: number | Search;
-      } | null)
-    | ({
-        relationTo: 'payload-folders';
-        value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1222,11 +1190,13 @@ export interface PostsSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  _h_media?: T;
   alt?: T;
   caption?: T;
-  folder?: T;
   updatedAt?: T;
   createdAt?: T;
+  _h_slugPath?: T;
+  _h_titlePath?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
@@ -1587,18 +1557,6 @@ export interface PayloadJobsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders_select".
- */
-export interface PayloadFoldersSelect<T extends boolean = true> {
-  name?: T;
-  folder?: T;
-  documentsAndFolders?: T;
-  folderType?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -1732,6 +1690,16 @@ export interface FooterSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

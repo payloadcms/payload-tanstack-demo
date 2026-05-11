@@ -1,8 +1,10 @@
 import { rtlLanguages } from '@payloadcms/translations'
 import { ProgressBar, RootProvider } from '@payloadcms/ui'
-import { TanStackRouterAdapter } from '@payloadcms/tanstack-start/client'
+import { TanStackRouterAdapter } from '@payloadcms/tanstack-start'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import '@/payload-foundation.scss'
 import '@payloadcms/ui/scss/app.scss'
+import '@/payload-overrides.css'
 
 import { getLayoutDataFn } from '../functions/layout.functions'
 import { serverFunctionHandler } from '../functions/serverFunction.functions'
