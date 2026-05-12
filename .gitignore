@@ -4,5 +4,4 @@ dist/
 .vinxi/
 *.db
 .env
-*.tgz
 public/media
