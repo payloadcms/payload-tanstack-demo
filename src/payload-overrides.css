@@ -1,5 +1,3 @@
-@layer payload-default {
-  .table {
-    display: block;
-  }
+div.table {
+  display: block;
 }
