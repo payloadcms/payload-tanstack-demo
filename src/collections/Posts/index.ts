@@ -70,6 +70,21 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        components: {
+          Label: '@/components/CustomFieldLabel#CustomFieldLabel',
+          Description: '@/components/CustomFieldDescription#default',
+        },
+      },
+    },
+    {
+      name: 'subtitle',
+      type: 'text',
+      admin: {
+        components: {
+          Field: '@/components/CustomRSCField#default',
+        },
+      },
     },
     {
       type: 'tabs',
@@ -169,6 +184,10 @@ export const Posts: CollectionConfig<'posts'> = {
           pickerAppearance: 'dayAndTime',
         },
         position: 'sidebar',
+        components: {
+          beforeInput: ['@/components/CustomBeforeInput#CustomBeforeInput'],
+          afterInput: ['@/components/CustomAfterInput#CustomAfterInput'],
+        },
       },
       hooks: {
         beforeChange: [

@@ -22,12 +22,10 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
+      afterDashboard: ['@/components/AfterDashboard'],
+      afterNavLinks: ['@/components/AfterNavLinks'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -81,6 +79,49 @@ export default buildConfig({
           req.payload.logger.error({ err: e, message: 'Error seeding data' })
           return new Response('Error seeding data.', { status: 500 })
         }
+      },
+    },
+    {
+      path: '/server-info',
+      method: 'get',
+      handler: async (req) => {
+        const os = await import('node:os')
+        const fs = await import('node:fs/promises')
+        const crypto = await import('node:crypto')
+
+        const dbPath = process.env.DATABASE_URL?.replace('file:', '') || './payload-tanstack.db'
+        let dbSize = 'unknown'
+        try {
+          const stat = await fs.stat(dbPath)
+          dbSize = `${(stat.size / 1024).toFixed(1)} KB`
+        } catch {
+          dbSize = 'file not found'
+        }
+
+        const collections = Object.keys(req.payload.collections)
+        const counts: Record<string, number> = {}
+        for (const slug of collections) {
+          const result = await req.payload.count({ collection: slug as any })
+          counts[slug] = result.totalDocs
+        }
+
+        return Response.json({
+          server: {
+            platform: os.platform(),
+            arch: os.arch(),
+            nodeVersion: process.version,
+            uptime: `${(os.uptime() / 3600).toFixed(1)}h`,
+            freeMemory: `${(os.freemem() / 1024 / 1024).toFixed(0)} MB`,
+            hostname: os.hostname(),
+          },
+          payload: {
+            collections: counts,
+            globals: req.payload.config.globals.map((g: any) => g.slug),
+            dbSize,
+          },
+          requestId: crypto.randomUUID(),
+          timestamp: new Date().toISOString(),
+        })
       },
     },
   ],
