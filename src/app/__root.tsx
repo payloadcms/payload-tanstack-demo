@@ -13,7 +13,16 @@ function RootComponent() {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <style>{`@layer tailwind, payload-default, payload;`}</style>
+        <style>{`
+          @layer payload-default, base, tailwind, payload;
+          @layer base {
+            html {
+              font-family: 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
+              line-height: 1.5;
+              -webkit-text-size-adjust: 100%;
+            }
+          }
+        `}</style>
         <HeadContent />
       </head>
       <body>
