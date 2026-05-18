@@ -2,6 +2,8 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 
 import type { Post } from '../../../payload-types'
 
+import { revalidatePath, revalidateTag } from '../../../utilities/revalidation'
+
 export const revalidatePost: CollectionAfterChangeHook<Post> = ({
   doc,
   previousDoc,
@@ -11,16 +13,23 @@ export const revalidatePost: CollectionAfterChangeHook<Post> = ({
     if (doc._status === 'published') {
       const path = `/posts/${doc.slug}`
       payload.logger.info(`Revalidating post at path: ${path}`)
+      revalidatePath(path)
+      revalidateTag('posts')
     }
 
     if (previousDoc._status === 'published' && doc._status !== 'published') {
       const oldPath = `/posts/${previousDoc.slug}`
       payload.logger.info(`Revalidating old post at path: ${oldPath}`)
+      revalidatePath(oldPath)
+      revalidateTag('posts')
     }
   }
   return doc
 }
 
 export const revalidateDelete: CollectionAfterDeleteHook<Post> = ({ doc }) => {
+  const path = `/posts/${doc.slug}`
+  revalidatePath(path)
+  revalidateTag('posts')
   return doc
 }

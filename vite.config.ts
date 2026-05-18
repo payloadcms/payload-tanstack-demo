@@ -4,9 +4,65 @@ import viteReact from '@vitejs/plugin-react'
 import rsc from '@vitejs/plugin-rsc'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig, mergeConfig } from 'vite'
+import { createLogger, defineConfig, mergeConfig, type PluginOption } from 'vite'
+
+const logger = createLogger()
+const shouldSuppress = (msg: string) =>
+  msg.includes('points to missing source files') ||
+  msg.includes('Sourcemap for') // covers any sourcemap-related warning variants
+
+const originalWarn = logger.warn.bind(logger)
+logger.warn = (msg, options) => {
+  if (typeof msg === 'string' && shouldSuppress(msg)) return
+  originalWarn(msg, options)
+}
+const originalWarnOnce = logger.warnOnce.bind(logger)
+logger.warnOnce = (msg, options) => {
+  if (typeof msg === 'string' && shouldSuppress(msg)) return
+  originalWarnOnce(msg, options)
+}
+
+const originalConsoleInfo = console.info.bind(console)
+console.info = (...args: unknown[]) => {
+  if (typeof args[0] === 'string' && args[0].includes('was modified by another process')) return
+  originalConsoleInfo(...args)
+}
+const originalConsoleLog = console.log.bind(console)
+console.log = (...args: unknown[]) => {
+  if (typeof args[0] === 'string' && args[0].includes('was modified by another process')) return
+  originalConsoleLog(...args)
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+/**
+ * Bypasses postcss for pre-compiled CSS files from @payloadcms packages.
+ * These use valid CSS @layer nesting that Tailwind's postcss plugin misparses.
+ * The full Payload stylesheet is loaded via `@payloadcms/ui/scss/app.scss` so
+ * individual component CSS files are redundant.
+ */
+function bypassPostcssForPayloadCss(): PluginOption {
+  return {
+    name: 'bypass-postcss-payload-css',
+    enforce: 'pre',
+    resolveId(id, importer) {
+      if (
+        importer &&
+        importer.includes('@payloadcms') &&
+        importer.includes('/dist/') &&
+        /\.(?:css|less)$/.test(id) &&
+        !id.includes('.scss')
+      ) {
+        return '\0payload-empty-css'
+      }
+    },
+    load(id) {
+      if (id === '\0payload-empty-css') {
+        return ''
+      }
+    },
+  }
+}
 
 export default defineConfig((env) =>
   mergeConfig(
@@ -27,6 +83,22 @@ export default defineConfig((env) =>
       tanstackStart,
     })(env),
     {
+      customLogger: logger,
+      plugins: [bypassPostcssForPayloadCss()],
+      build: {
+        rollupOptions: {
+          output: {
+            manualChunks: {
+              'payload-admin': [
+                '@payloadcms/ui',
+                '@payloadcms/tanstack-start',
+                '@payloadcms/richtext-lexical',
+              ],
+              'code-highlight': ['prism-react-renderer'],
+            },
+          },
+        },
+      },
       css: {
         preprocessorOptions: {
           scss: {
