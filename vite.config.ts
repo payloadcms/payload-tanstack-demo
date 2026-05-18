@@ -2,6 +2,7 @@ import { payloadPlugin } from '@payloadcms/tanstack-start/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import rsc from '@vitejs/plugin-rsc'
+import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createLogger, defineConfig, mergeConfig, type PluginOption } from 'vite'
@@ -36,14 +37,21 @@ console.log = (...args: unknown[]) => {
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
- * Bypasses postcss for pre-compiled CSS files from @payloadcms packages.
- * These use valid CSS @layer nesting that Tailwind's postcss plugin misparses.
- * The full Payload stylesheet is loaded via `@payloadcms/ui/scss/app.scss` so
- * individual component CSS files are redundant.
+ * Loads pre-compiled CSS files from @payloadcms packages as runtime <style>
+ * injections, bypassing Vite's CSS pipeline (and Tailwind's postcss plugin,
+ * which misparses Payload's `@layer` wrapping).
+ *
+ * The previous implementation simply emptied these files, but each component
+ * ships its own CSS (e.g. `ModularDashboard/index.css`) that's not bundled
+ * into `app.scss`, so the dashboard layout and other component styles broke.
  */
-function bypassPostcssForPayloadCss(): PluginOption {
+function loadPayloadDistCssAsStyle(): PluginOption {
+  const VIRT_PREFIX = '\0payload-dist-css:'
+  // Trailing `.js` keeps Vite's built-in CSS plugin (which matches paths
+  // ending in .css/.less/.scss/etc.) from re-claiming our virtual module.
+  const VIRT_SUFFIX = '.payload-dist-css.js'
   return {
-    name: 'bypass-postcss-payload-css',
+    name: 'load-payload-dist-css-as-style',
     enforce: 'pre',
     resolveId(id, importer) {
       if (
@@ -53,13 +61,30 @@ function bypassPostcssForPayloadCss(): PluginOption {
         /\.(?:css|less)$/.test(id) &&
         !id.includes('.scss')
       ) {
-        return '\0payload-empty-css'
+        const resolvedPath = path.resolve(path.dirname(importer), id)
+        return VIRT_PREFIX + resolvedPath + VIRT_SUFFIX
       }
     },
     load(id) {
-      if (id === '\0payload-empty-css') {
-        return ''
+      if (!id.startsWith(VIRT_PREFIX) || !id.endsWith(VIRT_SUFFIX)) return
+      const filePath = id.slice(VIRT_PREFIX.length, id.length - VIRT_SUFFIX.length)
+      let css = ''
+      try {
+        css = fs.readFileSync(filePath, 'utf8')
+      } catch {
+        return 'export default ""'
       }
+      const json = JSON.stringify(css)
+      return `
+const css = ${json};
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.setAttribute('data-payload-dist-css', ${JSON.stringify(filePath)});
+  style.textContent = css;
+  document.head.appendChild(style);
+}
+export default css;
+`
     },
   }
 }
@@ -84,7 +109,7 @@ export default defineConfig((env) =>
     })(env),
     {
       customLogger: logger,
-      plugins: [bypassPostcssForPayloadCss()],
+      plugins: [loadPayloadDistCssAsStyle()],
       build: {
         rollupOptions: {
           output: {
