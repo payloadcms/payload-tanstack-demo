@@ -1,3 +1,27 @@
 div.table {
   display: block;
 }
+
+/*
+ * Backport newer @payloadcms/next nav-link styling onto the older
+ * @payloadcms/ui DefaultNav that ships in payloadcms-next-4.0.0-beta.0.tgz.
+ * Without this, .nav__link uses asymmetric base(0.125) / base(1.5) padding;
+ * payload main uses spacer-1 / spacer-2 with a hover background.
+ */
+.nav__link {
+  padding-block: var(--spacer-1);
+  padding-inline: var(--spacer-2);
+  border-radius: var(--radius-medium);
+}
+
+a.nav__link:hover {
+  background: var(--color-bg-secondary);
+  text-decoration: none;
+}
+
+.nav__link--selected,
+.nav__link.active {
+  font-weight: 600;
+  border-radius: var(--radius-medium);
+  background: var(--color-bg-selected);
+}

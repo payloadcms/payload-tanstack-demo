@@ -1,14 +1,20 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, notFound, redirect } from '@tanstack/react-router'
+import { Fragment } from 'react'
 
-import { AdminPageView } from '../../components/AdminPageView/index.js'
-import { loadAdminPage } from '../../functions/admin.functions.js'
+import { loadAdminPageRSC } from '../../functions/adminPageRSC.functions.js'
+import { getAdminMeta } from '@payloadcms/tanstack-start'
 
 export const Route = createFileRoute('/_payload/admin/$')({
+  // Pass URL search params straight through so they appear in `loaderDeps`.
+  // Without this, TanStack Router treats `search` as `{}` and the loader is
+  // never re-run when query params like `?locale=es` change, which breaks
+  // locale-driven access control, form refetches, etc.
+  validateSearch: (search: Record<string, unknown>) => search,
   loaderDeps: ({ search }) => ({
     searchKey: JSON.stringify(search),
   }),
-  loader: ({ params, location }) =>
-    loadAdminPage({
+  loader: async ({ params, location }) => {
+    const data = (await loadAdminPageRSC({
       data: {
         _splat: params._splat ?? '',
         search: Object.fromEntries(new URLSearchParams(location.searchStr)) as Record<
@@ -16,36 +22,40 @@ export const Route = createFileRoute('/_payload/admin/$')({
           string | string[]
         >,
       },
-    }),
-  head: ({ loaderData }) => ({
-    meta: buildAdminMeta({
-      titleSuffix: loaderData?.viewProps?.clientConfig?.admin?.meta?.titleSuffix,
-      viewType: loaderData?.viewProps?.viewType,
-    }),
-  }),
+    })) as any
+    if (data?._redirect) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error -- TanStack Router requires throwing redirect objects
+      throw redirect({ to: data._redirect })
+    }
+    if (data?._notFound) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error -- TanStack Router requires throwing notFound objects
+      throw notFound()
+    }
+    return data
+  },
+  head: ({ loaderData }) => getAdminMeta((loaderData as any)?.metadata),
   component: AdminPage,
 })
 
-function buildAdminMeta({ titleSuffix, viewType }: { titleSuffix?: string; viewType?: string }) {
-  const siteName = titleSuffix ?? 'Payload Admin'
-
-  let pageTitle = siteName
-
-  if (viewType === 'dashboard') {
-    pageTitle = `Dashboard | ${siteName}`
-  } else if (viewType === 'document' || viewType === 'list') {
-    pageTitle = siteName
-  }
-
-  return [
-    { charSet: 'utf-8' as const },
-    { content: 'width=device-width, initial-scale=1', name: 'viewport' },
-    { title: pageTitle },
-  ]
-}
-
 function AdminPage() {
-  const data = Route.useLoaderData()
+  const data = Route.useLoaderData() as any
 
-  return <AdminPageView {...data} />
+  // RSC Flight payload — render directly, no client-side data reconstruction.
+  //
+  // Key the subtree by `routeKey` (the splat, derived server-side from the same
+  // loader result as `rscPayload`) so navigating to a different admin page
+  // (e.g. the create → edit redirect after a save, or duplicate) remounts the
+  // view, mirroring Next.js route-segment semantics. Mount-only effects re-run
+  // and client providers (DocumentInfo, etc.) re-initialize from the new
+  // payload's props.
+  //
+  // We deliberately key by the loader-derived `routeKey` rather than
+  // `location.pathname`: during a navigation transition the pathname updates
+  // before `useLoaderData()`, so a pathname key would remount with the
+  // *previous* payload and then reconcile the fresh payload in place, leaving
+  // providers holding stale `useState` from the prior document (e.g. a
+  // duplicated draft showing the source's "Published" status). `routeKey`
+  // changes in lockstep with `rscPayload`. Search params are excluded so
+  // search-only changes (list-view filtering) reconcile in place.
+  return <Fragment key={data?.routeKey}>{data?.rscPayload}</Fragment>
 }

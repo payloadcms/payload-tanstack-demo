@@ -1,6 +1,11 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 
+import { getInitialHtmlAttrsFn } from '../functions/theme.functions'
+
 export const Route = createRootRoute({
+  // Resolve admin theme / language / text-direction server-side so `<html>`
+  // gets the right `data-theme`/`lang`/`dir` on first paint (mirrors Next).
+  loader: () => getInitialHtmlAttrsFn(),
   component: RootComponent,
   head: () => ({
     links: [
@@ -10,8 +15,10 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  const { dir, languageCode, theme } = Route.useLoaderData()
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html data-theme={theme} dir={dir} lang={languageCode} suppressHydrationWarning>
       <head>
         <style>{`
           @layer payload-default, base, tailwind, payload;

@@ -24,11 +24,15 @@ export default buildConfig({
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],
-      afterDashboard: ['@/components/AfterDashboard'],
+      // afterDashboard: ['@/components/AfterDashboard'],
       afterNavLinks: ['@/components/AfterNavLinks'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
+      // TanStack Start keeps its import map at `src/importMap.js` (there's no
+      // Next.js `app/(payload)/admin` folder for the CLI to discover), so point
+      // `payload generate:importmap` at it explicitly.
+      importMapFile: path.resolve(dirname, 'importMap.js'),
     },
     user: Users.slug,
     livePreview: {
