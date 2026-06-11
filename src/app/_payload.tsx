@@ -29,7 +29,6 @@ function PayloadLayout() {
 
   return (
     <>
-      <style>{`@layer payload-default, payload;`}</style>
       <RootProvider
         config={data.clientConfig}
         dateFNSKey={data.dateFNSKey}
