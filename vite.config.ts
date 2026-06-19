@@ -47,7 +47,7 @@ export default defineConfig((env) =>
       additionalOptimizeDepsInclude: ['react/compiler-runtime'],
       payloadConfigPath: path.resolve(__dirname, 'src', 'payload.config.ts'),
       reactPlugin: viteReact({
-        exclude: [/node_modules\/@payloadcms\/ui\/dist/],
+        exclude: [],
         include: /\.[jt]sx?$/,
       }),
       rscPlugin: rsc({ serverHandler: false }),
@@ -55,20 +55,6 @@ export default defineConfig((env) =>
     })(env),
     {
       customLogger: logger,
-      build: {
-        rollupOptions: {
-          output: {
-            manualChunks: {
-              'payload-admin': [
-                '@payloadcms/ui',
-                '@payloadcms/tanstack-start',
-                '@payloadcms/richtext-lexical',
-              ],
-              'code-highlight': ['prism-react-renderer'],
-            },
-          },
-        },
-      },
       css: {
         preprocessorOptions: {
           scss: {
