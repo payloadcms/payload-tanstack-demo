@@ -62,7 +62,7 @@ export default buildConfig({
   editor: defaultLexical,
   db: sqliteAdapter({
     client: {
-      url: process.env.DATABASE_URL || '',
+      url: process.env.DATABASE_URL || 'file:./payload-tanstack.db',
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users],
@@ -131,7 +131,7 @@ export default buildConfig({
   ],
   globals: [Header, Footer],
   plugins,
-  secret: process.env.PAYLOAD_SECRET,
+  secret: process.env.PAYLOAD_SECRET || 'supersecretkey',
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

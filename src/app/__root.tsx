@@ -1,39 +1,38 @@
-import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
-
-import { getInitialHtmlAttrsFn } from '../functions/theme.functions'
+import { withPayloadRoot } from '@payloadcms/tanstack-start/client'
+import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
 
 export const Route = createRootRoute({
-  // Resolve admin theme / language / text-direction server-side so `<html>`
-  // gets the right `data-theme`/`lang`/`dir` on first paint (mirrors Next).
-  loader: () => getInitialHtmlAttrsFn(),
-  component: RootComponent,
   head: () => ({
     links: [
-      { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Roboto+Mono:wght@100..700&display=swap',
+      },
     ],
   }),
+  // Single Payload integration touch point: `withPayloadRoot` renders the
+  // Payload admin document shell on `/admin` routes and our own shell
+  // everywhere else. No root loader, no manual theme/html threading.
+  shellComponent: withPayloadRoot(MarketingHtml),
 })
 
-function RootComponent() {
-  const { dir, languageCode, theme } = Route.useLoaderData()
-
+function MarketingHtml({ children }: { children: React.ReactNode }) {
   return (
-    <html data-theme={theme} dir={dir} lang={languageCode} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <style>{`
-          @layer payload-default, base, tailwind, payload;
-          @layer base {
-            html {
-              font-family: 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
-              line-height: 1.5;
-              -webkit-text-size-adjust: 100%;
-            }
-          }
-        `}</style>
         <HeadContent />
       </head>
       <body>
-        <Outlet />
+        {children}
         <Scripts />
       </body>
     </html>
