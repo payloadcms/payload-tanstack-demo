@@ -55,6 +55,18 @@ export default defineConfig((env) =>
     })(env),
     {
       customLogger: logger,
+      resolve: {
+        alias: [
+          // Payload's barrel transitively pulls `prettier` (CJS) into the client
+          // bundle via `configToJSONSchema` → `json-schema-to-typescript`. That
+          // path is type-gen only and never runs in the browser, so stub it to
+          // keep the client build from choking on prettier's `index.cjs`.
+          {
+            find: /^prettier$/,
+            replacement: path.resolve(__dirname, 'src', 'stubs', 'prettier.ts'),
+          },
+        ],
+      },
       css: {
         preprocessorOptions: {
           scss: {

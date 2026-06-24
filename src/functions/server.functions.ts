@@ -2,48 +2,68 @@ import type { ServerFunctionClient, ServerFunctionClientArgs } from 'payload'
 
 import { createServerFn } from '@tanstack/react-start'
 
-/**
- * TanStack Start server function that dispatches to the shared Payload server
- * function registry (form-state, table-state, render-document, etc.) using the
- * RSC payload format — matching the Next.js adapter.
- *
- * Why a `createServerFn` instead of a hand-rolled `/api/server-function` JSON
- * route: server-rendered custom field components (returned by `buildFormState`
- * via `RenderServerComponent`) live as React elements inside the response. Raw
- * `JSON.stringify` strips them. TanStack Start's `createServerFn` wire format
- * uses seroval + an `$RSC` serialization adapter that serializes "RSC handles"
- * produced by `renderServerComponent` as Flight streams. The package's
- * `handleServerFunctions` runs the result through `serializeForRsc` to convert
- * React elements into those handles before they cross the wire.
- */
-export const runPayloadServerFn = createServerFn({ method: 'POST' })
+type LoadInput = {
+  _splat?: string
+  search?: Record<string, string | string[]>
+}
+
+// The app-owned config + generated importMap are resolved *inside* each handler
+// so the TanStack Start compiler strips them (and their `@payload-config` /
+// `./importMap.js` server-only graph: `payload`, `@payloadcms/db-sqlite`, etc.)
+// out of the client bundle.
+
+export const loadAdminPageRSC = createServerFn({ method: 'GET' })
+  .inputValidator((data: LoadInput): LoadInput => data ?? {})
+  .handler(async ({ data }) => {
+    const { loadAdminPage } = await import('@payloadcms/tanstack-start/server')
+    const config = await (await import('@payload-config')).default
+    const { importMap } = await import('../importMap.js')
+    return loadAdminPage({
+      config,
+      importMap,
+      search: data.search,
+      splat: data._splat,
+    })
+  })
+
+export const getLayoutDataFn = createServerFn({ method: 'GET' }).handler(async () => {
+  const { loadLayoutData } = await import('@payloadcms/tanstack-start/layouts')
+  const config = await (await import('@payload-config')).default
+  const { importMap } = await import('../importMap.js')
+  return loadLayoutData({ config, importMap })
+})
+
+const runPayloadServerFn = createServerFn({ method: 'POST' })
   .inputValidator((args: ServerFunctionClientArgs): ServerFunctionClientArgs => args)
   .handler(async ({ data }) => {
     const { handleServerFunctions } = await import('@payloadcms/tanstack-start/server')
-    const config = (await import('@payload-config')).default
+    const config = await (await import('@payload-config')).default
     const { importMap } = await import('../importMap.js')
-
     return (await handleServerFunctions({
-      name: data.name,
       args: data.args,
       config,
       importMap,
+      name: data.name,
     })) as any
   })
 
 /**
- * Client-side server function handler wired into `RootProvider.serverFunction`.
+ * Client-side `ServerFunctionClient` wired into `RootProvider.serverFunction`.
  *
- * Strips functions / symbols / RegExps / React elements from the args before
- * dispatching: the previous `fetch + JSON.stringify` pipeline silently dropped
- * those, but TanStack Start's seroval-based wire format errors instead. We
- * mirror the relaxed behaviour so existing callers (e.g. `getFormState` in
- * `ServerFunctionsProvider`) that may pass the live form state — which can
- * carry stray functions — keep working without each call site sanitising.
+ * This is the inlined equivalent of the package's `createServerFunctionClient`
+ * (from `@payloadcms/tanstack-start`). We intentionally do NOT import it from
+ * the package: that main entry barrel also re-exports `payloadApiRoute`, whose
+ * dynamic `handleAPIRoute` import drags `handleEndpoints` (server-only) into the
+ * client bundle — where `payload` resolves to its browser shim and the build
+ * fails with a MISSING_EXPORT. The package ships no `sideEffects: false`, so the
+ * unused `payloadApiRoute` graph can't be tree-shaken out. Inlining keeps the
+ * client graph off the main barrel entirely.
  *
- * Delegates to `runPayloadServerFn`, so the response (including any RSC handles
- * for server-rendered custom components) is decoded by TanStack Start back into
- * renderable React nodes on the client.
+ * `stripUnserializable` removes functions / symbols / RegExps / React elements
+ * before dispatch: TanStack Start's seroval wire format errors on them (the old
+ * `fetch + JSON.stringify` pipeline silently dropped them), so we sanitize here
+ * to keep existing callers (e.g. `getFormState`, which may pass live form state)
+ * working without each call site sanitizing.
  */
 export const serverFunctionHandler: ServerFunctionClient = async (
   args: ServerFunctionClientArgs,
