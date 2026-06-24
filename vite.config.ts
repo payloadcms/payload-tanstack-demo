@@ -90,6 +90,7 @@ export default defineConfig((env) =>
         },
       },
       server: {
+        port: 3000,
         warmup: {
           clientFiles: [
             './src/app/__root.tsx',
