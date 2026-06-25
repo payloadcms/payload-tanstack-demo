@@ -4,7 +4,7 @@ import '@/payload-foundation.scss'
 import '@payloadcms/ui/scss/app.scss'
 import '@/payload-overrides.css'
 
-import { getLayoutDataFn, serverFunctionHandler } from '../functions/server.functions.js'
+import { getLayoutDataFn, serverFunctionHandler } from './_payload/server.functions.js'
 
 export const Route = createFileRoute('/_payload')(
   payloadLayoutRoute({
