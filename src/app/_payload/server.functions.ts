@@ -1,6 +1,6 @@
 import type { ServerFunctionClientArgs } from 'payload'
 
-import { createServerFunctionClient } from '@payloadcms/tanstack-start'
+import { createServerFunctionClient } from '@payloadcms/tanstack-start/client'
 import { createServerFn } from '@tanstack/react-start'
 
 type LoadInput = {
@@ -14,7 +14,7 @@ const getConfig = async () => (await import('@payload-config')).default
 const getImportMap = async () => (await import('../../importMap.js')).importMap
 
 export const loadAdminPageRSC = createServerFn({ method: 'GET' })
-  .validator((data: LoadInput): LoadInput => data ?? {})
+  .inputValidator((data: LoadInput): LoadInput => data ?? {})
   .handler(async ({ data }) => {
     const { loadAdminPage } = await import('@payloadcms/tanstack-start/server')
     return loadAdminPage({
@@ -31,7 +31,7 @@ export const getLayoutDataFn = createServerFn({ method: 'GET' }).handler(async (
 })
 
 const runPayloadServerFn = createServerFn({ method: 'POST' })
-  .validator((args: ServerFunctionClientArgs): ServerFunctionClientArgs => args)
+  .inputValidator((args: ServerFunctionClientArgs): ServerFunctionClientArgs => args)
   .handler(async ({ data }) => {
     const { handleServerFunctions } = await import('@payloadcms/tanstack-start/server')
     return (await handleServerFunctions({
