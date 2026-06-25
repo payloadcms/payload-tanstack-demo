@@ -14,7 +14,7 @@ const getConfig = async () => (await import('@payload-config')).default
 const getImportMap = async () => (await import('../../importMap.js')).importMap
 
 export const loadAdminPageRSC = createServerFn({ method: 'GET' })
-  .inputValidator((data: LoadInput): LoadInput => data ?? {})
+  .validator((data: LoadInput): LoadInput => data ?? {})
   .handler(async ({ data }) => {
     const { loadAdminPage } = await import('@payloadcms/tanstack-start/server')
     return loadAdminPage({
@@ -31,7 +31,7 @@ export const getLayoutDataFn = createServerFn({ method: 'GET' }).handler(async (
 })
 
 const runPayloadServerFn = createServerFn({ method: 'POST' })
-  .inputValidator((args: ServerFunctionClientArgs): ServerFunctionClientArgs => args)
+  .validator((args: ServerFunctionClientArgs): ServerFunctionClientArgs => args)
   .handler(async ({ data }) => {
     const { handleServerFunctions } = await import('@payloadcms/tanstack-start/server')
     return (await handleServerFunctions({

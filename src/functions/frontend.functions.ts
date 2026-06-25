@@ -15,7 +15,7 @@ export const getFooterData = createServerFn({ method: 'GET' }).handler(async () 
 })
 
 export const getPageBySlug = createServerFn({ method: 'GET' })
-  .inputValidator((data: { slug: string }) => data)
+  .validator((data: { slug: string }) => data)
   .handler(async ({ data }) => {
     const config = (await import('@payload-config')).default
     const { getPayload } = await import('payload')
@@ -34,7 +34,7 @@ export const getPageBySlug = createServerFn({ method: 'GET' })
   })
 
 export const getPosts = createServerFn({ method: 'GET' })
-  .inputValidator((data: { page?: number }) => data)
+  .validator((data: { page?: number }) => data)
   .handler(async ({ data }) => {
     const config = (await import('@payload-config')).default
     const { getPayload } = await import('payload')
@@ -51,7 +51,7 @@ export const getPosts = createServerFn({ method: 'GET' })
   })
 
 export const getPostBySlug = createServerFn({ method: 'GET' })
-  .inputValidator((data: { slug: string }) => data)
+  .validator((data: { slug: string }) => data)
   .handler(async ({ data }) => {
     const config = (await import('@payload-config')).default
     const { getPayload } = await import('payload')
@@ -70,7 +70,7 @@ export const getPostBySlug = createServerFn({ method: 'GET' })
   })
 
 export const getArchivePosts = createServerFn({ method: 'GET' })
-  .inputValidator((data: { categories?: (string | number)[]; limit?: number }) => data)
+  .validator((data: { categories?: (string | number)[]; limit?: number }) => data)
   .handler(async ({ data }) => {
     const config = (await import('@payload-config')).default
     const { getPayload } = await import('payload')
@@ -87,7 +87,7 @@ export const getArchivePosts = createServerFn({ method: 'GET' })
   })
 
 export const searchPosts = createServerFn({ method: 'GET' })
-  .inputValidator((data: { query?: string }) => data)
+  .validator((data: { query?: string }) => data)
   .handler(async ({ data }) => {
     const config = (await import('@payload-config')).default
     const { getPayload } = await import('payload')
