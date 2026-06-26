@@ -6,13 +6,9 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-
-const filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -40,8 +36,11 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
+    // Upload to the public/media directory making files publicly accessible even outside of Payload.
+    // Anchored to the working directory (the project root for both `vite dev` and `vite preview`)
+    // rather than `import.meta.url`, which moves into `dist/` once the config is bundled and would
+    // otherwise resolve to a non-existent `dist/server/public/media`.
+    staticDir: path.resolve(process.cwd(), 'public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
