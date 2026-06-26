@@ -1,7 +1,7 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import sharp from 'sharp'
 import path from 'path'
-import { buildConfig, PayloadRequest, createLocalReq } from 'payload'
+import {  PayloadRequest, createLocalReq } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
@@ -19,7 +19,9 @@ import { seed } from './endpoints/seed'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-export default buildConfig({
+import { buildFigmaConfig } from '@payloadcms/figma'
+
+export default buildFigmaConfig({
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -60,11 +62,6 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URL || 'file:./payload-tanstack.db',
-    },
-  }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   endpoints: [
@@ -154,4 +151,5 @@ export default buildConfig({
     },
     tasks: [],
   },
+  figma: {},
 })

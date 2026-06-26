@@ -97,18 +97,18 @@ export type LexicalNodes_744BEF80 =
   | SerializedLinkNode<LexicalNodes_744BEF80, LexicalLinkFields>;
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "LexicalNodes_2603BD92".
+ * via the `definition` "LexicalNodes_658A03C4".
  */
-export type LexicalNodes_2603BD92 =
+export type LexicalNodes_658A03C4 =
   | SerializedTextNode
   | SerializedTabNode
   | SerializedLineBreakNode
-  | SerializedParagraphNode<LexicalNodes_2603BD92>
+  | SerializedParagraphNode<LexicalNodes_658A03C4>
   | SerializedHorizontalRuleNode
-  | SerializedBlockNode<BannerBlock | CodeBlock | MediaBlock_D6C44817>
-  | SerializedHeadingNode<LexicalNodes_2603BD92, 'h1' | 'h2' | 'h3' | 'h4'>
-  | SerializedAutoLinkNode<LexicalNodes_2603BD92, LexicalLinkFields>
-  | SerializedLinkNode<LexicalNodes_2603BD92, LexicalLinkFields>;
+  | SerializedBlockNode<BannerBlock | CodeBlock | MediaBlock_7426DDFC>
+  | SerializedHeadingNode<LexicalNodes_658A03C4, 'h1' | 'h2' | 'h3' | 'h4'>
+  | SerializedAutoLinkNode<LexicalNodes_658A03C4, LexicalLinkFields>
+  | SerializedLinkNode<LexicalNodes_658A03C4, LexicalLinkFields>;
 
 export interface Config {
   auth: {
@@ -149,7 +149,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   fallbackLocale: null;
   globals: {
@@ -199,7 +199,7 @@ export interface UserAuthOperations {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: number;
+  id: string;
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
@@ -212,11 +212,11 @@ export interface Page {
             reference?:
               | ({
                   relationTo: 'pages';
-                  value: number | Page;
+                  value: string | Page;
                 } | null)
               | ({
                   relationTo: 'posts';
-                  value: number | Post;
+                  value: string | Post;
                 } | null);
             url?: string | null;
             label: string;
@@ -228,7 +228,7 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media?: (number | null) | Media;
+    media?: (string | null) | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
@@ -236,7 +236,7 @@ export interface Page {
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
-    image?: (number | null) | Media;
+    image?: (string | null) | Media;
     description?: string | null;
   };
   publishedAt?: string | null;
@@ -254,23 +254,23 @@ export interface Page {
  * via the `definition` "posts".
  */
 export interface Post {
-  id: number;
+  id: string;
   title: string;
   subtitle?: string | null;
-  heroImage?: (number | null) | Media;
-  content: LexicalRichText<LexicalNodes_2603BD92>;
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
+  heroImage?: (string | null) | Media;
+  content: LexicalRichText<LexicalNodes_658A03C4>;
+  relatedPosts?: (string | Post)[] | null;
+  categories?: (string | Category)[] | null;
   meta?: {
     title?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
-    image?: (number | null) | Media;
+    image?: (string | null) | Media;
     description?: string | null;
   };
   publishedAt?: string | null;
-  authors?: (number | User)[] | null;
+  authors?: (string | User)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -291,8 +291,8 @@ export interface Post {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
-  _h_media?: (number | null) | Media;
+  id: string;
+  _h_media?: (string | null) | Media;
   alt?: string | null;
   caption?: LexicalRichText<LexicalNodes_744BEF80> | null;
   updatedAt: string;
@@ -372,17 +372,17 @@ export interface Media {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
+  id: string;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
   slug: string;
-  parent?: (number | null) | Category;
+  parent?: (string | null) | Category;
   breadcrumbs?:
     | {
-        doc?: (number | null) | Category;
+        doc?: (string | null) | Category;
         url?: string | null;
         label?: string | null;
         id?: string | null;
@@ -396,25 +396,16 @@ export interface Category {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   name?: string | null;
+  figmaHandle?: string | null;
+  figmaImageUrl?: string | null;
+  /**
+   * Managed by Figma
+   */
+  email?: string | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
   collection: 'users';
 }
 /**
@@ -431,11 +422,11 @@ export interface CallToActionBlock {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
@@ -467,11 +458,11 @@ export interface ContentBlock {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
@@ -492,7 +483,7 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
-  media: number | Media;
+  media: string | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -505,12 +496,12 @@ export interface ArchiveBlock {
   introContent?: LexicalRichText<LexicalNodes_106E6C8F> | null;
   populateBy?: ('collection' | 'selection') | null;
   relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
+  categories?: (string | Category)[] | null;
   limit?: number | null;
   selectedDocs?:
     | {
         relationTo: 'posts';
-        value: number | Post;
+        value: string | Post;
       }[]
     | null;
   id?: string | null;
@@ -522,7 +513,7 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  form: number | Form;
+  form: string | Form;
   enableIntro?: boolean | null;
   introContent?: LexicalRichText<LexicalNodes_106E6C8F> | null;
   id?: string | null;
@@ -534,7 +525,7 @@ export interface FormBlock {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: number;
+  id: string;
   title: string;
   fields?: (Checkbox | Country | Email | Message | Number | Select | State | Text | Textarea)[] | null;
   submitButtonLabel?: string | null;
@@ -699,7 +690,7 @@ export interface Textarea {
  * via the `definition` "redirects".
  */
 export interface Redirect {
-  id: number;
+  id: string;
   /**
    * You will need to rebuild the website when changing this field.
    */
@@ -709,11 +700,11 @@ export interface Redirect {
     reference?:
       | ({
           relationTo: 'pages';
-          value: number | Page;
+          value: string | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: number | Post;
+          value: string | Post;
         } | null);
     url?: string | null;
   };
@@ -725,8 +716,8 @@ export interface Redirect {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: number;
-  form: number | Form;
+  id: string;
+  form: string | Form;
   submissionData?:
     | {
         field: string;
@@ -744,18 +735,18 @@ export interface FormSubmission {
  * via the `definition` "search".
  */
 export interface Search {
-  id: number;
+  id: string;
   title?: string | null;
   priority?: number | null;
   doc: {
     relationTo: 'posts';
-    value: number | Post;
+    value: string | Post;
   };
   slug?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
-    image?: (number | null) | Media;
+    image?: (string | null) | Media;
   };
   categories?:
     | {
@@ -773,7 +764,7 @@ export interface Search {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -790,7 +781,7 @@ export interface PayloadKv {
  * via the `definition` "payload-jobs".
  */
 export interface PayloadJob {
-  id: number;
+  id: string;
   /**
    * Input data provided to the job
    */
@@ -882,48 +873,48 @@ export interface PayloadJob {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'pages';
-        value: number | Page;
+        value: string | Page;
       } | null)
     | ({
         relationTo: 'posts';
-        value: number | Post;
+        value: string | Post;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'redirects';
-        value: number | Redirect;
+        value: string | Redirect;
       } | null)
     | ({
         relationTo: 'forms';
-        value: number | Form;
+        value: string | Form;
       } | null)
     | ({
         relationTo: 'form-submissions';
-        value: number | FormSubmission;
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'search';
-        value: number | Search;
+        value: string | Search;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -933,10 +924,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -956,7 +947,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -1251,22 +1242,11 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  figmaHandle?: T;
+  figmaImageUrl?: T;
+  email?: T;
   updatedAt?: T;
   createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1536,7 +1516,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "header".
  */
 export interface Header {
-  id: number;
+  id: string;
   navItems?:
     | {
         link: {
@@ -1545,11 +1525,11 @@ export interface Header {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
@@ -1565,7 +1545,7 @@ export interface Header {
  * via the `definition` "footer".
  */
 export interface Footer {
-  id: number;
+  id: string;
   navItems?:
     | {
         link: {
@@ -1574,11 +1554,11 @@ export interface Footer {
           reference?:
             | ({
                 relationTo: 'pages';
-                value: number | Page;
+                value: string | Page;
               } | null)
             | ({
                 relationTo: 'posts';
-                value: number | Post;
+                value: string | Post;
               } | null);
           url?: string | null;
           label: string;
@@ -1656,14 +1636,14 @@ export interface TaskSchedulePublish {
     doc?:
       | ({
           relationTo: 'pages';
-          value: number | Page;
+          value: string | Page;
         } | null)
       | ({
           relationTo: 'posts';
-          value: number | Post;
+          value: string | Post;
         } | null);
     global?: string | null;
-    user?: (number | null) | User;
+    user?: (string | null) | User;
   };
   output?: unknown;
 }
@@ -1693,12 +1673,12 @@ export interface CodeBlock {
  * Multiple blocks resolve to the `MediaBlock` interface with different fields, so a content hash is appended to keep the generated types stable and unambiguous. Set a unique `interfaceName` on the block to choose the name yourself. See https://payloadcms.com/docs/typescript/generating-types#block-interface-name-collisions
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock_D6C44817".
+ * via the `definition` "MediaBlock_7426DDFC".
  */
-export interface MediaBlock_D6C44817 {
+export interface MediaBlock_7426DDFC {
   id: string;
   blockType: 'mediaBlock';
-  media: number | Media;
+  media: string | Media;
   blockName?: string | null;
 }
 /**

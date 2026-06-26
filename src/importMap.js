@@ -25,13 +25,17 @@ import { CustomAfterInput as CustomAfterInput_f4c4611de3177ab602c30dddb3dfa6ac }
 import { CustomBeforeInput as CustomBeforeInput_399546a60c9321b2a5ddff0e1ac8e914 } from '@/components/CustomBeforeInput'
 import { NullField as NullField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { HierarchyButton as HierarchyButton_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
+import { FigmaAvatarCell as FigmaAvatarCell_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
 import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
+import { FigmaAvatar as FigmaAvatar_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { default as default_aa936f6d4bfcfa210342637718f4c629 } from '@/components/AfterNavLinks'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
+import { DefaultLoginButton as DefaultLoginButton_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
+import { ContentApiClientUploadHandler as ContentApiClientUploadHandler_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { FolderIcon as FolderIcon_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { HierarchySidebarTabServer as HierarchySidebarTabServer_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
@@ -65,13 +69,17 @@ export const importMap = {
   "@/components/CustomBeforeInput#CustomBeforeInput": CustomBeforeInput_399546a60c9321b2a5ddff0e1ac8e914,
   "@payloadcms/ui#NullField": NullField_3817bf644402e67bfe6577f60ef982de,
   "@payloadcms/ui/rsc#HierarchyButton": HierarchyButton_ab83ff7e88da8d3530831f296ec4756a,
+  "@payloadcms/figma/client#FigmaAvatarCell": FigmaAvatarCell_5b632879807206965a35b58cd5166e1c,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
   "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
+  "@payloadcms/figma/client#FigmaAvatar": FigmaAvatar_5b632879807206965a35b58cd5166e1c,
   "@/components/AfterNavLinks#default": default_aa936f6d4bfcfa210342637718f4c629,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
   "@/components/BeforeLogin#default": default_8a7ab0eb7ab5c511aba12e68480bfe5e,
+  "@payloadcms/figma/client#DefaultLoginButton": DefaultLoginButton_5b632879807206965a35b58cd5166e1c,
+  "@payloadcms/figma/client#ContentApiClientUploadHandler": ContentApiClientUploadHandler_5b632879807206965a35b58cd5166e1c,
   "@payloadcms/ui#FolderIcon": FolderIcon_3817bf644402e67bfe6577f60ef982de,
   "@payloadcms/ui/rsc#HierarchySidebarTabServer": HierarchySidebarTabServer_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
