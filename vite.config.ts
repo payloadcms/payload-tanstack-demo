@@ -55,6 +55,16 @@ export default defineConfig((env) =>
     })(env),
     {
       customLogger: logger,
+      // `@payloadcms/figma` isn't in tanstack-start's noExternal allowlist, so it
+      // stays external and its transitive `@payloadcms/ui` CSS imports hit Node's
+      // loader ("Unknown file extension .css"). Force Vite to process it instead.
+      environments: {
+        rsc: { resolve: { noExternal: ['@payloadcms/figma'] } },
+        ssr: { resolve: { noExternal: ['@payloadcms/figma'] } },
+      },
+      ssr: {
+        noExternal: ['@payloadcms/figma'],
+      },
       resolve: {
         alias: [
           // Payload's barrel transitively pulls `prettier` (CJS) into the client
@@ -64,6 +74,12 @@ export default defineConfig((env) =>
           {
             find: /^prettier$/,
             replacement: path.resolve(__dirname, 'src', 'stubs', 'prettier.ts'),
+          },
+          // `@payloadcms/figma`'s login button imports `useSearchParams` from
+          // `next/navigation.js`. No Next runtime here — shim it for TanStack Start.
+          {
+            find: 'next/navigation.js',
+            replacement: path.resolve(__dirname, 'src', 'stubs', 'next-navigation.ts'),
           },
         ],
       },
