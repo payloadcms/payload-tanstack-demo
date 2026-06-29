@@ -75,12 +75,6 @@ export default defineConfig((env) =>
             find: /^prettier$/,
             replacement: path.resolve(__dirname, 'src', 'stubs', 'prettier.ts'),
           },
-          // `@payloadcms/figma`'s login button imports `useSearchParams` from
-          // `next/navigation.js`. No Next runtime here — shim it for TanStack Start.
-          {
-            find: 'next/navigation.js',
-            replacement: path.resolve(__dirname, 'src', 'stubs', 'next-navigation.ts'),
-          },
         ],
       },
       css: {

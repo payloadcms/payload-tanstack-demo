@@ -21,7 +21,7 @@
     "@payloadcms/admin-bar": "4.0.0-internal.bc5cf8c",
     "@payloadcms/db-sqlite": "4.0.0-internal.bc5cf8c",
     "@payloadcms/drizzle": "4.0.0-internal.bc5cf8c",
-    "@payloadcms/figma": "0.0.1-alpha.68",
+    "@payloadcms/figma": "file:./payloadcms-figma.tgz",
     "@payloadcms/graphql": "4.0.0-internal.bc5cf8c",
     "@payloadcms/live-preview-react": "4.0.0-internal.bc5cf8c",
     "@payloadcms/next": "4.0.0-internal.bc5cf8c",
