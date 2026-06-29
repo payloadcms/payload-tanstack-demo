@@ -6,3 +6,7 @@ dist/
 .env
 public/media
 .tanstack/
+
+# Figma CMS
+.env.local
+lambda.zip

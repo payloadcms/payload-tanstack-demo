@@ -33,8 +33,8 @@ importers:
         specifier: 4.0.0-internal.bc5cf8c
         version: 4.0.0-internal.bc5cf8c(@libsql/client@0.14.0)(payload@4.0.0-internal.bc5cf8c(graphql@16.14.2)(typescript@5.7.3))
       '@payloadcms/figma':
-        specifier: file:./payloadcms-figma-0.0.1-202606291782749728.tgz
-        version: file:payloadcms-figma-0.0.1-202606291782749728.tgz(ce4399c43035d99015edb854d715d847)
+        specifier: file:./payloadcms-figma.tgz
+        version: file:payloadcms-figma.tgz(ce4399c43035d99015edb854d715d847)
       '@payloadcms/graphql':
         specifier: 4.0.0-internal.bc5cf8c
         version: 4.0.0-internal.bc5cf8c(graphql@16.14.2)(payload@4.0.0-internal.bc5cf8c(graphql@16.14.2)(typescript@5.7.3))(typescript@5.7.3)
@@ -1392,9 +1392,9 @@ packages:
     peerDependencies:
       payload: 4.0.0-internal.bc5cf8c
 
-  '@payloadcms/figma@file:payloadcms-figma-0.0.1-202606291782749728.tgz':
-    resolution: {integrity: sha512-9/37mwR/PTz/8bwnUarIArYNxNRM8f1Ji52hZwfFkBzvtI/T4KGUs7nDmg0l+1cNiHLDtzvDTqDAirWxd8eLZA==, tarball: file:payloadcms-figma-0.0.1-202606291782749728.tgz}
-    version: 0.0.1-202606291782749728
+  '@payloadcms/figma@file:payloadcms-figma.tgz':
+    resolution: {integrity: sha512-/HYV6eQ1t7aeG1piGi3Ll2j7VYMubrbAL9KcIWhZ2Jm5hG1pjPf6QbLTYITthuIgxwwoIDUby2qSeQneFeviyg==, tarball: file:payloadcms-figma.tgz}
+    version: 0.0.1-202606291782763799
     hasBin: true
     peerDependencies:
       '@payloadcms/plugin-cloud-storage': ^3.0.0
@@ -5700,7 +5700,7 @@ snapshots:
       - sql.js
       - sqlite3
 
-  '@payloadcms/figma@file:payloadcms-figma-0.0.1-202606291782749728.tgz(ce4399c43035d99015edb854d715d847)':
+  '@payloadcms/figma@file:payloadcms-figma.tgz(ce4399c43035d99015edb854d715d847)':
     dependencies:
       '@clack/prompts': 0.11.0
       '@figma/rest-api-spec': 0.34.0

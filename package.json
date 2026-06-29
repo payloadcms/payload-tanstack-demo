@@ -14,14 +14,15 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "ii": "pnpm --ignore-workspace install",
-    "reinstall": "rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install"
+    "reinstall": "rm -rf node_modules && rm pnpm-lock.yaml && pnpm --ignore-workspace install",
+    "lambda:buildzip": "pnpm build && pnpm exec payloadcms-figma build-lambda-zip"
   },
   "dependencies": {
     "@faceless-ui/window-info": "^3.0.1",
     "@payloadcms/admin-bar": "4.0.0-internal.bc5cf8c",
     "@payloadcms/db-sqlite": "4.0.0-internal.bc5cf8c",
     "@payloadcms/drizzle": "4.0.0-internal.bc5cf8c",
-    "@payloadcms/figma": "file:./payloadcms-figma-0.0.1-202606291782749728.tgz",
+    "@payloadcms/figma": "file:./payloadcms-figma.tgz",
     "@payloadcms/graphql": "4.0.0-internal.bc5cf8c",
     "@payloadcms/live-preview-react": "4.0.0-internal.bc5cf8c",
     "@payloadcms/next": "4.0.0-internal.bc5cf8c",
