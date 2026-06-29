@@ -1,5 +1,3 @@
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
-import sharp from 'sharp'
 import path from 'path'
 import {  PayloadRequest, createLocalReq } from 'payload'
 import { fileURLToPath } from 'url'
@@ -129,7 +127,6 @@ export default buildFigmaConfig({
   globals: [Header, Footer],
   plugins,
   secret: process.env.PAYLOAD_SECRET || 'supersecretkey',
-  sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
