@@ -2,6 +2,7 @@ import { payloadPlugin } from '@payloadcms/tanstack-start/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import rsc from '@vitejs/plugin-rsc'
+import { nitro } from 'nitro/vite'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createLogger, defineConfig, mergeConfig } from 'vite'
@@ -46,6 +47,7 @@ export default defineConfig((env) =>
       ],
       additionalOptimizeDepsInclude: ['react/compiler-runtime'],
       payloadConfigPath: path.resolve(__dirname, 'src', 'payload.config.ts'),
+      plugins: [nitro()],
       reactPlugin: viteReact({
         exclude: [],
         include: /\.[jt]sx?$/,
