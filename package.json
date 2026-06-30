@@ -30,6 +30,7 @@
     "@payloadcms/plugin-search": "4.0.0-internal.bc5cf8c",
     "@payloadcms/plugin-seo": "4.0.0-internal.bc5cf8c",
     "@payloadcms/richtext-lexical": "4.0.0-internal.bc5cf8c",
+    "@payloadcms/storage-vercel-blob": "4.0.0-internal.bc5cf8c",
     "@payloadcms/tanstack-start": "4.0.0-internal.bc5cf8c",
     "@payloadcms/translations": "4.0.0-internal.bc5cf8c",
     "@payloadcms/ui": "4.0.0-internal.bc5cf8c",
@@ -102,6 +103,7 @@
       "@payloadcms/graphql": "4.0.0-internal.bc5cf8c",
       "@payloadcms/next": "4.0.0-internal.bc5cf8c",
       "@payloadcms/db-vercel-postgres": "4.0.0-internal.bc5cf8c",
+      "@payloadcms/storage-vercel-blob": "4.0.0-internal.bc5cf8c",
       "@payloadcms/sdk": "4.0.0-internal.bc5cf8c",
       "@payloadcms/live-preview": "4.0.0-internal.bc5cf8c"
     },
