@@ -95,10 +95,10 @@ export default defineConfig((env) =>
             replacement: path.resolve(__dirname, 'src', 'stubs', 'prettier.ts'),
           },
           // Payload registers the Vercel Blob client upload handler in `importMap.js`
-          // even with `clientUploads` disabled. The real handler transitively pulls
-          // `@vercel/blob/client` (→ `undici`) and node `path` into the client bundle,
-          // which tanstack-start's import-protection rejects. Replace the whole handler
-          // module with a no-op; server-side blob ops use `@vercel/blob` directly.
+          // and renders it as a wrapper around the admin tree. The real handler pulls
+          // `@vercel/blob/client` (→ `undici`, `async-retry`'s browser `require()`) into
+          // the client bundle, crashing the admin and tripping import-protection. Swap it
+          // for a children-passthrough stub; server-side blob ops use `@vercel/blob`.
           {
             find: /^@payloadcms\/storage-vercel-blob\/client$/,
             replacement: path.resolve(__dirname, 'src', 'stubs', 'vercel-blob-client.ts'),
