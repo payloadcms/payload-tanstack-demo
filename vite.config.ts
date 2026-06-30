@@ -2,6 +2,7 @@ import { payloadPlugin } from '@payloadcms/tanstack-start/vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import rsc from '@vitejs/plugin-rsc'
+import { nitro } from 'nitro/vite'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createLogger, defineConfig, mergeConfig } from 'vite'
@@ -46,6 +47,7 @@ export default defineConfig((env) =>
       ],
       additionalOptimizeDepsInclude: ['react/compiler-runtime'],
       payloadConfigPath: path.resolve(__dirname, 'src', 'payload.config.ts'),
+      plugins: [nitro()],
       reactPlugin: viteReact({
         exclude: [],
         include: /\.[jt]sx?$/,
@@ -55,6 +57,16 @@ export default defineConfig((env) =>
     })(env),
     {
       customLogger: logger,
+      // `@payloadcms/figma` isn't in tanstack-start's noExternal allowlist, so it
+      // stays external and its transitive `@payloadcms/ui` CSS imports hit Node's
+      // loader ("Unknown file extension .css"). Force Vite to process it instead.
+      environments: {
+        rsc: { resolve: { noExternal: ['@payloadcms/figma'] } },
+        ssr: { resolve: { noExternal: ['@payloadcms/figma'] } },
+      },
+      ssr: {
+        noExternal: ['@payloadcms/figma'],
+      },
       resolve: {
         alias: [
           // Payload's barrel transitively pulls `prettier` (CJS) into the client
