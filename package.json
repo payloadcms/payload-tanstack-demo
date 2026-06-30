@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning vite build",
+    "vercel-build": "payload migrate && cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning vite build",
     "dev": "cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning vite dev",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "start": "cross-env NODE_OPTIONS=--disable-warning=ExperimentalWarning vite preview",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
