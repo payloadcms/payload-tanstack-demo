@@ -9,6 +9,7 @@ import path from 'path'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { rewriteMediaURLs } from '../hooks/rewriteMediaURLs'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -18,6 +19,9 @@ export const Media: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterRead: [rewriteMediaURLs],
   },
   fields: [
     {
