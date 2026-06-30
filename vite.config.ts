@@ -69,6 +69,16 @@ export default defineConfig((env) =>
       },
       resolve: {
         alias: [
+          // Radix scroll-lock deps (react-remove-scroll, use-callback-ref, etc.)
+          // import `tslib`. Rolldown resolves it to the UMD build, which self-marks
+          // `__esModule: true`, so its `__toESM` helper never synthesizes `.default`
+          // — the bundled consumer then destructures `__extends` off `undefined` and
+          // the server crashes at boot. Pin tslib to its ESM entry (named exports,
+          // no CJS interop) to sidestep it.
+          {
+            find: /^tslib$/,
+            replacement: path.resolve(__dirname, 'node_modules', 'tslib', 'tslib.es6.mjs'),
+          },
           // Payload's barrel transitively pulls `prettier` (CJS) into the client
           // bundle via `configToJSONSchema` → `json-schema-to-typescript`. That
           // path is type-gen only and never runs in the browser, so stub it to
