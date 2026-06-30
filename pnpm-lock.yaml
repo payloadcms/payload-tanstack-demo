@@ -134,6 +134,9 @@ importers:
       payload:
         specifier: 4.0.0-internal.bc5cf8c
         version: 4.0.0-internal.bc5cf8c(bufferutil@4.1.0)(graphql@16.14.2)(typescript@5.7.3)
+      pg:
+        specifier: 8.20.0
+        version: 8.20.0
       pino:
         specifier: 10.3.1
         version: 10.3.1

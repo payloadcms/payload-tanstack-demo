@@ -61,11 +61,18 @@ export default defineConfig((env) =>
       // stays external and its transitive `@payloadcms/ui` CSS imports hit Node's
       // loader ("Unknown file extension .css"). Force Vite to process it instead.
       environments: {
-        rsc: { resolve: { noExternal: ['@payloadcms/figma'] } },
-        ssr: { resolve: { noExternal: ['@payloadcms/figma'] } },
+        rsc: {
+          resolve: { noExternal: ['@payloadcms/figma'] },
+          build: { rollupOptions: { external: ['pg', 'pg-native', 'pg-cloudflare'] } },
+        },
+        ssr: {
+          resolve: { noExternal: ['@payloadcms/figma'] },
+          build: { rollupOptions: { external: ['pg', 'pg-native', 'pg-cloudflare'] } },
+        },
       },
       ssr: {
         noExternal: ['@payloadcms/figma'],
+        external: ['pg', 'pg-native', 'pg-cloudflare'],
       },
       resolve: {
         alias: [
