@@ -57,6 +57,10 @@ export default defineConfig((env) =>
     })(env),
     {
       customLogger: logger,
+      // `payloadPlugin` opts into lightningcss for CSS minification, but
+      // lightningcss 1.32.0 rejects `@keyframes` nested inside a style rule
+      // (valid CSS nesting the Lexical editor styles emit). Use esbuild instead.
+      build: { cssMinify: 'esbuild' },
       // `@payloadcms/figma` isn't in tanstack-start's noExternal allowlist, so it
       // stays external and its transitive `@payloadcms/ui` CSS imports hit Node's
       // loader ("Unknown file extension .css"). Force Vite to process it instead.
