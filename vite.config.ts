@@ -18,10 +18,12 @@ export default defineConfig(
             find: /^@\//,
             replacement: path.resolve(__dirname, 'src') + '/',
           },
+          // Pin tslib to its ESM build; the UMD one breaks CJS interop at boot.
           {
             find: /^tslib$/,
             replacement: path.resolve(__dirname, 'node_modules', 'tslib', 'tslib.es6.mjs'),
           },
+          // Stub the blob client upload handler out of the client bundle.
           {
             find: /^@payloadcms\/storage-vercel-blob\/client$/,
             replacement: path.resolve(__dirname, 'src', 'stubs', 'vercel-blob-client.ts'),
