@@ -12,9 +12,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig(
   withPayload(
     { payloadConfigPath: path.resolve(__dirname, 'src', 'payload.config.ts') },
-    // Guest mode: this app owns the RSC, TanStack Start, and React plugins, so
-    // there is a single copy of each (@vitejs/plugin-rsc is a singleton).
-    // Payload hands us its base config plus the options its admin requires.
     ({ config, pluginOptions }) =>
       mergeConfig(config, {
         plugins: [
