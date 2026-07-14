@@ -14,7 +14,6 @@ import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
-import { SlugField as SlugField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { CustomFieldLabel as CustomFieldLabel_d0b39ddb8e40a0c65882fbba84cfda2f } from '@/components/CustomFieldLabel'
 import { default as default_824514cc3fe2a4bb58d5f2b3fb492e2f } from '@/components/CustomFieldDescription'
 import { default as default_416dadb4e3cb40053aac2dc7359acc02 } from '@/components/CustomRSCField'
@@ -59,7 +58,6 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
-  "@payloadcms/ui#SlugField": SlugField_3817bf644402e67bfe6577f60ef982de,
   "@/components/CustomFieldLabel#CustomFieldLabel": CustomFieldLabel_d0b39ddb8e40a0c65882fbba84cfda2f,
   "@/components/CustomFieldDescription#default": default_824514cc3fe2a4bb58d5f2b3fb492e2f,
   "@/components/CustomRSCField#default": default_416dadb4e3cb40053aac2dc7359acc02,
