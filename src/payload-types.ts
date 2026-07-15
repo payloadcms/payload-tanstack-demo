@@ -1631,15 +1631,7 @@ export interface CollectionQueryWidget {
   data?: {
     title?: string | null;
     relatedCollection:
-      | 'pages'
-      | 'posts'
-      | 'media'
-      | 'categories'
-      | 'users'
-      | 'redirects'
-      | 'forms'
-      | 'form-submissions'
-      | 'search';
+      'pages' | 'posts' | 'media' | 'categories' | 'users' | 'redirects' | 'forms' | 'form-submissions' | 'search';
     where?:
       | {
           [k: string]: unknown;
