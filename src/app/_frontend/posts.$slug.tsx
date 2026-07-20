@@ -1,5 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import { getPostBySlug } from '@/functions/frontend.functions'
+import { getClientSideURL } from '@/utilities/getURL'
+import type { Post } from '@/payload-types'
 import { PostHero } from '@/heros/PostHero'
 import RichText from '@/components/RichText'
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
@@ -13,10 +16,17 @@ export const Route = createFileRoute('/_frontend/posts/$slug')({
 })
 
 function PostPage() {
-  const post = Route.useLoaderData()
+  const initialData = Route.useLoaderData()
   const { slug } = Route.useParams()
   const { setHeaderTheme } = useHeaderTheme()
   const url = '/posts/' + slug
+
+  // Subscribe to Live Preview so edits in the admin iframe render in real time.
+  const { data: post } = useLivePreview<Post>({
+    initialData: initialData as Post,
+    serverURL: getClientSideURL(),
+    depth: 2,
+  })
 
   useEffect(() => {
     setHeaderTheme('dark')
