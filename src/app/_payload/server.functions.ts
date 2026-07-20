@@ -11,7 +11,7 @@ type LoadInput = {
 // Single injection point for the app-owned config + generated importMap, shared
 // by all three server functions below.
 const getConfig = async () => (await import('@payload-config')).default
-const getImportMap = async () => (await import('../../importMap.js')).importMap
+const getImportMap = async () => (await import('./importMap.js')).importMap
 
 export const loadAdminPageRSC = createServerFn({ method: 'GET' })
   .validator((data: LoadInput): LoadInput => data ?? {})
