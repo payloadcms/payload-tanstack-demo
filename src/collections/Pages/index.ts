@@ -130,7 +130,9 @@ export const Pages: CollectionConfig<'pages'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        // We set this to a small interval for optimal live preview
+        // Temporarily disabled due to autosave race conditions, causing bad slug field generation
+        // interval: 100, 
       },
       schedulePublish: true,
     },
