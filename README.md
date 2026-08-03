@@ -17,7 +17,7 @@ For details on the architecture, adapter contracts, and current test pass rates,
 
 ```bash
 pnpm install
-cp .env.example .env  # configure DATABASE_URI, PAYLOAD_SECRET, etc.
+cp .env.example .env  # configure POSTGRES_URL and PAYLOAD_SECRET
 pnpm dev
 ```
 
