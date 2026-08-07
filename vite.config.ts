@@ -11,13 +11,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig(
   withPayload(
-    ({ pluginOptions }) =>
+    ({ env, pluginOptions }) =>
       ({
         plugins: [
           rsc(pluginOptions.rsc),
           tanstackStart(pluginOptions.tanstackStart),
           viteReact(pluginOptions.react),
-          nitro(),
+          nitro(pluginOptions.nitro),
         ],
         resolve: {
           alias: [
