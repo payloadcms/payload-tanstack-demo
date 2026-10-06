@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from '@tanstack/react-router'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
 import React, { useState } from 'react'
 
-import './index.scss'
+import './index.css'
 
 import { getClientSideURL } from '@/utilities/getURL'
 

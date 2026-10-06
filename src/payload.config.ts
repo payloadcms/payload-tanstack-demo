@@ -2,7 +2,7 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import sharp from 'sharp'
 import path from 'path'
-import { buildConfig, PayloadRequest, createLocalReq } from 'payload'
+import { buildConfig, PayloadRequest, createPayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
@@ -73,7 +73,7 @@ export default buildConfig({
           return new Response('Action forbidden.', { status: 403 })
         }
         try {
-          const payloadReq = await createLocalReq({ user: req.user }, req.payload)
+          const payloadReq = await createPayloadRequest({ payload: req.payload, user: req.user })
           await seed({ payload: req.payload, req: payloadReq })
           return Response.json({ success: true })
         } catch (e) {

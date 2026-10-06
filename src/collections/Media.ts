@@ -21,7 +21,9 @@ export const Media: CollectionConfig = {
     update: authenticated,
   },
   hooks: {
-    afterRead: [rewriteMediaURLs],
+    // Only rewrite to `/media/*` when files live in `public/media` (local dev). With Vercel Blob
+    // enabled, files exist only in the blob store and must be served via `/api/media/file/*`.
+    afterRead: process.env.BLOB_READ_WRITE_TOKEN ? [] : [rewriteMediaURLs],
   },
   fields: [
     {
